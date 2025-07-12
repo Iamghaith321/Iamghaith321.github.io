@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHAP Explainability | Ghaith Ben Amor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --dark: #0f172a;
+      --light: #e2e8f0;
+      --glass: rgba(30, 58, 138, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    nav {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 1rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: #3b82f6;
+    }
+
+    /* Project Header */
+    .project-header {
+      text-align: center;
+      padding: 6rem 0 3rem;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .project-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .project-subtitle {
+      font-size: 1.25rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--light);
+      opacity: 0.9;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 1px solid var(--glass-border);
+      animation: fadeIn 1s ease-out;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.5rem 0 1rem;
+      color: var(--primary-light);
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* Images */
+    .project-image {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+    }
+
+    .project-image img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Code Blocks */
+    pre {
+      background: rgba(15, 23, 42, 0.7);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--glass-border);
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-light);
+      text-decoration: none;
+      font-weight: 600;
+      margin: 2rem 0;
+      transition: all 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(5px);
+    }
+
+    .back-button:hover {
+      gap: 0.8rem;
+      background: rgba(59, 130, 246, 0.4);
+    }
+
+    /* Two-column layout */
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .two-column {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+
+  <div class="container">
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Project Header -->
+    <header class="project-header">
+      <h1 class="project-title">SHAP Explainability</h1>
+      <p class="project-subtitle">Game theoretic approach to explain the output of any machine learning model using Shapley values</p>
+    </header>
+
+    <!-- Introduction -->
+    <div class="content-section">
+      <h2>Introduction to SHAP</h2>
+      <p><strong>SHAP (SHapley Additive exPlanations)</strong> is a unified approach to explain the output of any machine learning model. SHAP connects game theory with local explanations, representing the only possible consistent and locally accurate additive feature attribution method based on expectations.</p>
+      
+      <div class="project-image">
+        <img src="https://raw.githubusercontent.com/shap/shap/master/docs/artwork/shap_header.svg" alt="SHAP Header">
+      </div>
+      
+      <p>SHAP values provide a way to fairly distribute the "payout" (prediction) among the features by calculating the contribution of each feature to the prediction. This is based on Shapley values from cooperative game theory, which assign payouts to players depending on their contribution to the total payout.</p>
+    </div>
+
+    <!-- Key Features -->
+    <div class="content-section">
+      <h2>Key Features</h2>
+      
+      <div class="two-column">
+        <div>
+          <h3><i class="fas fa-project-diagram"></i> Model Agnostic</h3>
+          <p>Works with any machine learning model including deep learning, tree-based models, and traditional algorithms.</p>
+          
+          <h3><i class="fas fa-chart-bar"></i> Consistent Explanations</h3>
+          <p>The only method that satisfies all three desirable properties for feature attribution: local accuracy, missingness, and consistency.</p>
+        </div>
+        
+        <div>
+          <h3><i class="fas fa-bolt"></i> Fast Implementations</h3>
+          <p>Optimized implementations for tree models (XGBoost, LightGBM, CatBoost, scikit-learn) and deep learning models.</p>
+          
+          <h3><i class="fas fa-eye"></i> Rich Visualizations</h3>
+          <p>Provides intuitive visual explanations including force plots, dependence plots, and decision plots.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Installation -->
+    <div class="content-section">
+      <h2>Installation</h2>
+      <p>SHAP can be installed from either PyPI or conda-forge:</p>
+      
+      <pre><code>pip install shap
+# or
+conda install -c conda-forge shap</code></pre>
+    </div>
+
+    <!-- Examples -->
+    <div class="content-section">
+      <h2>Examples</h2>
+      
+      <h3>Tree Ensemble Example</h3>
+      <pre><code>import xgboost
+import shap
+
+# Train an XGBoost model
+X, y = shap.datasets.california()
+model = xgboost.XGBRegressor().fit(X, y)
+
+# Explain the model's predictions
+explainer = shap.Explainer(model)
+shap_values = explainer(X)
+
+# Visualize the first prediction's explanation
+shap.plots.waterfall(shap_values[0])</code></pre>
+      
+      <div class="project-image">
+        <img src="https://raw.githubusercontent.com/shap/shap/master/docs/artwork/california_waterfall.png" alt="SHAP Waterfall Plot">
+      </div>
+      
+      <h3>Deep Learning Example</h3>
+      <pre><code>import shap
+import numpy as np
+
+# Explain a deep learning model
+background = x_train[np.random.choice(x_train.shape[0], 100, replace=False)]
+e = shap.DeepExplainer(model, background)
+shap_values = e.shap_values(x_test[1:5])
+
+# Plot the feature attributions
+shap.image_plot(shap_values, -x_test[1:5])</code></pre>
+      
+      <div class="project-image">
+        <img src="https://raw.githubusercontent.com/shap/shap/master/docs/artwork/mnist_image_plot.png" alt="SHAP Image Plot">
+      </div>
+    </div>
+
+    <!-- Applications -->
+    <div class="content-section">
+      <h2>Applications</h2>
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+          <i class="fas fa-check" style="color: var(--primary-light); position: absolute; left: 0;"></i>
+          <strong>Model Debugging:</strong> Identify problematic features or biases in your model
+        </li>
+        <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+          <i class="fas fa-check" style="color: var(--primary-light); position: absolute; left: 0;"></i>
+          <strong>Feature Importance:</strong> Understand which features drive your model's predictions
+        </li>
+        <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+          <i class="fas fa-check" style="color: var(--primary-light); position: absolute; left: 0;"></i>
+          <strong>Regulatory Compliance:</strong> Provide explanations for model decisions in regulated industries
+        </li>
+        <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+          <i class="fas fa-check" style="color: var(--primary-light); position: absolute; left: 0;"></i>
+          <strong>Model Monitoring:</strong> Track how feature importance changes over time
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
