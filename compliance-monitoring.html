@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance Monitoring Agent | Ghaith Ben Amor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --dark: #0f172a;
+      --light: #e2e8f0;
+      --glass: rgba(30, 58, 138, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --security-blue: #2563eb;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    nav {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 1rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: #3b82f6;
+    }
+
+    /* Project Header */
+    .project-header {
+      text-align: center;
+      padding: 6rem 0 3rem;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .project-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .project-subtitle {
+      font-size: 1.25rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--light);
+      opacity: 0.9;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 1px solid var(--glass-border);
+      animation: fadeIn 1s ease-out;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin: 1.5rem 0 1rem;
+      color: var(--security-blue);
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* Feature List */
+    .feature-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 0.8rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .feature-list li:before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+      color: var(--security-blue);
+    }
+
+    /* Tech Stack */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .tech-item {
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--security-blue);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* Architecture Diagram */
+    .architecture {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .architecture-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 150px;
+    }
+
+    .architecture-arrow {
+      font-size: 1.5rem;
+      color: var(--security-blue);
+    }
+
+    .architecture-icon {
+      background: rgba(59, 130, 246, 0.2);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--security-blue);
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--glass-border);
+    }
+
+    /* Code Blocks */
+    pre {
+      background: rgba(15, 23, 42, 0.7);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--glass-border);
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Sample Report */
+    .report-sample {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--security-blue);
+    }
+
+    .report-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--security-blue);
+    }
+
+    /* Risk Indicators */
+    .risk-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+
+    .risk-low {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .risk-medium {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+
+    .risk-high {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--security-blue);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      transition: all 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid var(--glass-border);
+    }
+
+    .back-button:hover {
+      gap: 0.8rem;
+      background: rgba(59, 130, 246, 0.4);
+    }
+
+    /* Roadmap */
+    .roadmap-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .roadmap-list li {
+      margin-bottom: 0.8rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .roadmap-list li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--security-blue);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Project Header -->
+    <header class="project-header">
+      <h1 class="project-title">Compliance Monitoring Agent</h1>
+      <p class="project-subtitle">AI-powered log analysis system for automated security compliance reporting</p>
+    </header>
+
+    <!-- Project Overview -->
+    <div class="content-section">
+      <h2>✨ Overview</h2>
+      <p>The Compliance Monitoring Agent is a lightweight, agentic AI system that scans system logs for security anomalies and compliance risks using GPT-4. Designed for IT teams, consultants, and SMBs, it enables fast, auditable reporting with minimal overhead.</p>
+      
+      <div class="tech-stack">
+        <span class="tech-item">Python</span>
+        <span class="tech-item">LangChain</span>
+        <span class="tech-item">OpenAI</span>
+        <span class="tech-item">pandas</span>
+        <span class="tech-item">dotenv</span>
+        <span class="tech-item">GPT-4</span>
+      </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="content-section">
+      <h2>⚙️ Features</h2>
+      
+      <ul class="feature-list">
+        <li>Automated detection of brute-force login attempts</li>
+        <li>GPT-4 powered log summarization and risk classification</li>
+        <li>Modular and easy to extend architecture</li>
+        <li>Secure email dispatch of weekly reports</li>
+        <li>Full audit log for transparency and compliance</li>
+      </ul>
+    </div>
+
+    <!-- Architecture -->
+    <div class="content-section">
+      <h2>🧱 Architecture</h2>
+      
+      <div class="architecture">
+        <div class="architecture-step">
+          <div class="architecture-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div>Log File</div>
+        </div>
+        
+        <div class="architecture-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div class="architecture-step">
+          <div class="architecture-icon">
+            <i class="fas fa-filter"></i>
+          </div>
+          <div>Suspicion Filter</div>
+        </div>
+        
+        <div class="architecture-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div class="architecture-step">
+          <div class="architecture-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div>LLM Analysis</div>
+        </div>
+        
+        <div class="architecture-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div class="architecture-step">
+          <div class="architecture-icon">
+            <i class="fas fa-file-contract"></i>
+          </div>
+          <div>Report Generator</div>
+        </div>
+        
+        <div class="architecture-arrow">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        
+        <div class="architecture-step">
+          <div class="architecture-icon">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+          <div>Email Dispatcher</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Getting Started -->
+    <div class="content-section">
+      <h2>🚀 Getting Started</h2>
+      
+      <h3>1. Clone the Repo</h3>
+      <pre><code>git clone https://github.com/yourusername/compliance-monitoring-agent
+cd compliance-monitoring-agent</code></pre>
+      
+      <h3>2. Install Dependencies</h3>
+      <pre><code>pip install -r requirements.txt</code></pre>
+      
+      <h3>3. Set Up Environment Variables</h3>
+      <p>Create a .env file in the root:</p>
+      <pre><code>LOG_FILE=sample_logs/server_log.csv
+EMAIL_SENDER=your_email@example.com
+EMAIL_RECIPIENT=recipient_email@example.com
+SMTP_SERVER=smtp.example.com
+SMTP_PASSWORD=your_password
+OPENAI_API_KEY=your_openai_api_key</code></pre>
+      
+      <h3>4. Run the Agent</h3>
+      <pre><code>python main.py</code></pre>
+    </div>
+
+    <!-- Sample Output -->
+    <div class="content-section">
+      <h2>📊 Sample Output</h2>
+      
+      <div class="report-sample">
+        <div class="report-title">Compliance Monitoring Report</div>
+        <div style="border-bottom: 1px dashed var(--glass-border); margin-bottom: 1rem;"></div>
+        
+        <p><strong>Suspicious Log Entries:</strong></p>
+        <p>2025-05-19 08:31:08 | jdoe | LOGIN | 192.168.1.101 | FAILED | Account temporarily locked</p>
+        <p>2025-05-19 08:32:15 | admin | LOGIN | 10.0.0.5 | FAILED | Unauthorized access attempt</p>
+        
+        <p><strong>Summary:</strong></p>
+        <p>Multiple failed login attempts detected from 192.168.1.101. Admin login failed from suspicious IP. 
+        <span class="risk-indicator risk-medium">Risk: Medium</span>. Recommend IP block and MFA enforcement.</p>
+      </div>
+    </div>
+
+    <!-- Security & Privacy -->
+    <div class="content-section">
+      <h2>🔒 Security & Privacy</h2>
+      
+      <ul class="feature-list">
+        <li>All credentials are stored in .env (excluded from version control)</li>
+        <li>GPT-4 queries are stateless and logged for audit</li>
+        <li>No persistent storage of sensitive data</li>
+        <li>End-to-end encryption for email reports</li>
+      </ul>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="content-section">
+      <h2>🧭 Roadmap</h2>
+      
+      <ul class="roadmap-list">
+        <li>Add support for log rotation and archiving</li>
+        <li>Integrate with Slack/Teams for real-time alerts</li>
+        <li>Add HTML/PDF report output options</li>
+        <li>Develop web-based dashboard UI</li>
+        <li>Expand to cloud service monitoring (AWS, Azure)</li>
+      </ul>
+    </div>
+
+    <!-- Technical Details -->
+    <div class="content-section">
+      <h2>🧠 Technical Deep Dive</h2>
+      
+      <h3>Core Analysis Function</h3>
+      <pre><code>def analyze_logs(log_file):
+    # Load and preprocess logs
+    logs = pd.read_csv(log_file)
+    suspicious = filter_suspicious_entries(logs)
+    
+    # Generate LLM prompt
+    prompt = f"""Analyze these security logs and identify compliance issues:
+{logs.head(20).to_string()}
+
+Key things to look for:
+1. Failed login attempts
+2. Unauthorized access attempts
+3. Configuration changes
+4. Any unusual patterns
+
+Provide:
+- Risk assessment (Low/Medium/High)
+- Summary of issues
+- Recommended actions"""
+    
+    # Get LLM analysis
+    analysis = get_llm_analysis(prompt)
+    generate_report(analysis)
+    send_email_report()</code></pre>
+      
+      <h3>Modular Design</h3>
+      <p>The system is built with pluggable components, allowing easy extension for:</p>
+      <ul class="feature-list">
+        <li>New log formats (JSON, Syslog, Windows Event Logs)</li>
+        <li>Additional analysis modules</li>
+        <li>Custom report templates</li>
+        <li>Alternative notification channels</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghaith Ben Amor | Data Science Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e3a8a;  /* Darker blue */
+      --primary-light: #3b82f6;
+      --dark: #0f172a;     /* Very dark blue */
+      --light: #e2e8f0;
+      --glass: rgba(30, 58, 138, 0.7); /* Dark blue glass */
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .logo span {
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 1rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: #3b82f6;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80') no-repeat center/cover;
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .profile-pic {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      animation: fadeIn 0.8s ease-out;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin-bottom: 2rem;
+      color: #e2e8f0;
+      opacity: 0.9;
+      animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      animation: fadeIn 0.8s ease-out 0.4s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(30deg);
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:hover::after {
+      left: 100%;
+    }
+
+    .btn-outline {
+      border: 2px solid #3b82f6;
+      color: #3b82f6;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: #3b82f6;
+      color: white;
+    }
+
+    /* Project Cards */
+    .projects-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 400px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0) 50%);
+      z-index: 1;
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+    }
+
+    .project-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .project-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      z-index: 2;
+      color: white;
+    }
+
+    .project-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .project-info p {
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .tech {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.3);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Sections */
+    .section {
+      padding: 6rem 0;
+    }
+
+    .section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      text-align: center;
+      position: relative;
+      color: #e2e8f0;
+    }
+
+    .section h2::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      justify-items: center;
+    }
+
+    .skill-card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .skill-card i {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .skill-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #e2e8f0;
+    }
+
+    .skill-card p {
+      color: #94a3b8;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      justify-items: center;
+    }
+
+    .contact-card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .contact-card i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #3b82f6;
+    }
+
+    .contact-card h3 {
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-card p {
+      color: #94a3b8;
+    }
+
+    /* Latest Reads Section */
+    .reads-section {
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4rem 0;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .reads-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reads-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #e2e8f0;
+      text-align: center;
+    }
+
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .book-card {
+      background: rgba(30, 58, 138, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .book-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+    }
+
+    .book-image {
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .book-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .book-card:hover .book-image img {
+      transform: scale(1.05);
+    }
+
+    .book-info {
+      padding: 1.5rem;
+    }
+
+    .book-category {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #e2e8f0;
+    }
+
+    .book-author {
+      color: #94a3b8;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .book-description {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-pic {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 2rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tagline {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">Ghaith<span>BenAmor</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <img src="assets/pics/WhatsApp Image 2025-06-06 at 16.15.26_30d92599.jpg" alt="Ghaith Ben Amor" class="profile-pic">
+        <div class="hero-text">
+          <h1>Hi, I'm <span>Ghaith</span></h1>
+          <p class="tagline">Final-year Computer Science Engineering & Data student passionate about transforming data into business impact.</p>
+          <div class="cta-buttons">
+            <a href="#projects" class="btn">Explore My Work</a>
+            <a href="#contact" class="btn-outline">Hire Me</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- What I Do -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2>What I Do</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fas fa-database"></i>
+          <h3>Data Engineering</h3>
+          <p>Building ETL pipelines (Talend, Airflow, SQL)</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-brain"></i>
+          <h3>Machine Learning</h3>
+          <p>Developing models (scikit-learn, Prophet, YOLOv8)</p>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Visualization</h3>
+          <p>Interactive dashboards (Power BI, Tableau)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Featured Projects</h2>
+      <div class="projects-grid">
+        <!-- Project 1 - Monoprix -->
+        <div class="project-card" onclick="window.location.href='monoprix.html'">
+          <img src="assets/pics/Monoprix-BF2- (1) (1).jpg">
+          <div class="project-info">
+            <h3>Finance & Controlling – Monoprix France</h3>
+            <p>Automated ETL, ML models for supplier risk, and Power BI dashboards</p>
+            <span class="tech">Power BI</span>
+            <span class="tech">SQL</span>
+            <span class="tech">Machine Learning</span>
+            <span class="highlight">Ranked 2nd best university project</span>
+          </div>
+        </div>
+        <!-- Project 5 - Compliance Monitoring Agent -->
+<div class="project-card" onclick="window.location.href='compliance-monitoring.html'">
+  <img src="assets/pics/digital-security-guardian-stockcake.jpg" alt="Compliance Monitoring Agent">
+  <div class="project-info">
+    <h3>Compliance Monitoring Agent</h3>
+    <p>AI-powered log analysis for security compliance</p>
+    <span class="tech">Python</span>
+    <span class="tech">GPT-4</span>
+    <span class="tech">LangChain</span>
+  </div>
+</div>
+        <!-- Project 3 - Sentiment Analyzer -->
+        <div class="project-card" onclick="window.location.href='sentiment-analyzer.html'">
+          <img src="assets/pics/Best-Places-To-Read-Online.avif">
+          <div class="project-info">
+            <h3>Web Article Sentiment Analyzer</h3>
+            <p>Real-time NLP tool to extract insights from web content</p>
+            <span class="tech">Python</span>
+            <span class="tech">Transformers</span>
+            <span class="tech">Flask</span>
+          </div>
+        </div>
+        <!-- Project 2 - E-commerce -->
+        <div class="project-card" onclick="window.location.href='ecommerce.html'">
+          <img src="assets/pics/e-commerce-Digigalt-2.jpg">
+          <div class="project-info">
+            <h3>E-commerce User Behavior</h3>
+            <p>Purchase intent prediction and recommendation engine</p>
+            <span class="tech">Python</span>
+            <span class="tech">scikit-learn</span>
+            <span class="tech">Flask</span>
+          </div>
+        </div>
+        <div class="project-card" onclick="window.location.href='shap.html'">
+  <div class="project-image">
+    <img src="assets/pics/shap.jpg" alt="SHAP Explanation">
+  </div>
+  <div class="project-info">
+    <h3>SHAP Explainability</h3>
+    <p>Game theoretic approach to explain any machine learning model using Shapley values</p>
+    <div class="tech-tags">
+      <span>Python</span>
+      <span>ML</span>
+      <span>XAI</span>
+    </div>
+  </div>
+</div>
+
+        <!-- Project 4 - CrashCal -->
+        <div class="project-card" onclick="window.location.href='crashcal.html'">
+          <img src="assets/pics/broken-bumper-hood-car-result-600nw-2349037603.webp">
+          <div class="project-info">
+            <h3>CrashCal: AI Damage Analyzer</h3>
+            <p>Detects crash severity and repair cost from images</p>
+            <span class="tech">YOLOv8</span>
+            <span class="tech">TensorFlow</span>
+            <span class="tech">OpenCV</span>
+          </div>
+        </div>
+  </section>
+<!-- Latest Reads Section -->
+  <section class="reads-section">
+    <div class="reads-container">
+      <h2 class="reads-title">My Latest Reads</h2>
+      <div class="books-grid">
+        <div class="book-card">
+          <div class="book-image">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Data Science Book">
+          </div>
+          <div class="book-info">
+            <span class="book-category">Data Science</span>
+            <h3 class="book-title">The Art of Data Science</h3>
+            <p class="book-author">By Roger D. Peng & Elizabeth Matsui</p>
+            <p class="book-description">A guide to the essential skills of data science, focusing on the process of data analysis from question formulation to effective communication of results.</p>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-image">
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1011&q=80" alt="Finance Book">
+          </div>
+          <div class="book-info">
+            <span class="book-category">Financial Growth</span>
+            <h3 class="book-title">The Psychology of Money</h3>
+            <p class="book-author">By Morgan Housel</p>
+            <p class="book-description">Timeless lessons on wealth, greed, and happiness through 19 short stories exploring the strange ways people think about money.</p>
+          </div>
+        </div>
+
+        <div class="book-card">
+          <div class="book-image">
+            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="General Book">
+          </div>
+          <div class="book-info">
+            <span class="book-category">Personal Growth</span>
+            <h3 class="book-title">Atomic Habits</h3>
+            <p class="book-author">By James Clear</p>
+            <p class="book-description">A proven framework for building good habits and breaking bad ones through tiny changes that deliver remarkable results.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Let's Connect</h2>
+      <div class="contact-grid">
+        <a href="mailto:ghaithbenamor89@gmail.com" class="contact-card">
+          <i class="fas fa-envelope"></i>
+          <h3>Email</h3>
+          <p>ghaithbenamor89@gmail.com</p>
+        </a>
+        <a href="tel:+21622179729" class="contact-card">
+          <i class="fas fa-phone"></i>
+          <h3>Phone</h3>
+          <p>+216 22 179 729</p>
+        </a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-card">
+          <i class="fab fa-linkedin"></i>
+          <h3>LinkedIn</h3>
+          <p>Connect professionally</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <script>
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Animate elements when scrolled into view
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.section, .project-card, .skill-card, .book-card');
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
+    };
+
+    // Set initial state for animation
+    document.querySelectorAll('.section, .project-card, .skill-card, .book-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease-out';
+    });
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+  </script>
+</body>
+</html>

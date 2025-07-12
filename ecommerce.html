@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-commerce User Behavior Analysis | Ghaith Ben Amor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e3a8a;  /* Darker blue */
+      --primary-light: #3b82f6;
+      --dark: #0f172a;     /* Very dark blue */
+      --light: #e2e8f0;
+      --glass: rgba(30, 58, 138, 0.7); /* Dark blue glass */
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    /* Back Button */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      transition: all 0.3s;
+    }
+
+    .back-button:hover {
+      gap: 0.8rem;
+      color: #e2e8f0;
+    }
+
+    /* Project Header */
+    .project-header {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .project-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .project-subtitle {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* GIF Container */
+    .gif-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 2rem auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .gif-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Project Meta */
+    .project-meta {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      background: rgba(15, 23, 42, 0.7);
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      min-width: 200px;
+      text-align: center;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    /* Project Content */
+    .project-content {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 16px;
+      padding: 3rem;
+      margin: 3rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      margin: 2rem 0 1.5rem;
+      background: linear-gradient(90deg, #e2e8f0 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      border-radius: 3px;
+    }
+
+    /* Visualization Grid */
+    .viz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .viz-item {
+      background: rgba(30, 58, 138, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      transition: all 0.3s;
+    }
+
+    .viz-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+    }
+
+    .viz-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .viz-item h3 {
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tech Badges */
+    .tech-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      margin: 0.3rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    /* Button */
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #3b82f6 0%, #1e3a8a 100%);
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      color: #cbd5e1;
+    }
+
+    p {
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .project-header {
+        padding: 2rem 0;
+      }
+      
+      .project-title {
+        font-size: 2rem;
+      }
+      
+      .project-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .project-meta {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .viz-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <!-- Project Header -->
+    <header class="project-header">
+      <h1 class="project-title">E-commerce User Behavior Analysis</h1>
+      <p class="project-subtitle">Predicting purchase intent and building recommendation systems using clustering algorithms</p>
+    </header>
+
+    <!-- GIF Demonstration -->
+    <div class="gif-container">
+      <img src="assets/gifs/clusters.gif" alt="E-commerce User Clustering Demo">
+    </div>
+
+    <!-- Project Meta -->
+    <div class="project-meta">
+      <div class="meta-item">
+        <strong style="color: #e2e8f0;">Role:</strong> Data Scientist
+      </div>
+      <div class="meta-item">
+        <strong style="color: #e2e8f0;">Timeline:</strong> 2 months (2023)
+      </div>
+      <div class="meta-item">
+        <strong style="color: #e2e8f0;">Tech Stack:</strong>
+        <div style="margin-top: 0.8rem;">
+          <span class="tech-badge">Python</span>
+          <span class="tech-badge">scikit-learn</span>
+          <span class="tech-badge">Flask</span>
+          <span class="tech-badge">t-SNE</span>
+          <span class="tech-badge">PCA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Content -->
+    <div class="project-content">
+      <h2 class="section-title">Project Overview</h2>
+      <p>This project analyzes e-commerce user behavior patterns to predict purchase intent and build a recommendation system. Using a dataset of 50,000 user sessions from an online retailer, I applied clustering techniques to identify distinct user segments and their shopping behaviors.</p>
+
+      <h2 class="section-title">Dataset and Business Value</h2>
+      <p>The dataset included:</p>
+      <ul>
+        <li>User browsing history (pages visited, time spent)</li>
+        <li>Demographic information</li>
+        <li>Purchase history</li>
+        <li>Cart abandonment patterns</li>
+      </ul>
+      <p>This analysis helps businesses:</p>
+      <ul>
+        <li>Identify high-value customer segments</li>
+        <li>Personalize marketing campaigns</li>
+        <li>Optimize product recommendations</li>
+        <li>Reduce cart abandonment rates</li>
+      </ul>
+
+      <h2 class="section-title">Technical Approach</h2>
+      <p>I explored multiple techniques for clustering and visualizing user behavior:</p>
+      
+      <div class="viz-grid">
+        <div class="viz-item">
+          <img src="assets/pics/main.jpg" alt="k-Means Clustering">
+          <h3>k-Means Clustering</h3>
+          <p>Partitioned users into distinct groups based on browsing and purchase patterns using the elbow method to determine optimal clusters.</p>
+        </div>
+        
+        <div class="viz-item">
+          <img src="assets/pics/dbscan-density-based-clustering-density-based-clustering-1.png" alt="DBSCAN Clustering">
+          <h3>DBSCAN</h3>
+          <p>Identified dense clusters of similar users while detecting outliers who didn't fit standard patterns.</p>
+        </div>
+        
+        <div class="viz-item">
+          <img src="assets/pics/ab8e4a8435cd8b3d763ceefacd947ee0c8e0eed6-944x702.png" alt="Dimensionality Reduction">
+          <h3>Dimensionality Reduction</h3>
+          <p>Used t-SNE and PCA to visualize high-dimensional data in 2D/3D space while preserving relationships.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">Key Findings</h2>
+      <ul>
+        <li>Identified 5 distinct user segments with different conversion rates</li>
+        <li>Discovered that "window shoppers" accounted for 60% of traffic but only 5% of purchases</li>
+        <li>Developed a recommendation system that increased conversions by 22% for target segments</li>
+        <li>Created a purchase intent prediction model with 85% accuracy</li>
+      </ul>
+
+      <h2 class="section-title">Implementation</h2>
+      <p>The final system included:</p>
+      <ol>
+        <li>Real-time user segmentation as customers browse</li>
+        <li>Personalized product recommendations via a Flask API</li>
+        <li>Dashboard for marketing teams to monitor segments</li>
+        <li>Automated alerts for high-intent users</li>
+      </ol>
+
+      <h2 class="section-title">Challenges & Solutions</h2>
+      <p><strong>Challenge:</strong> High-dimensional sparse data made clustering difficult<br>
+      <strong>Solution:</strong> Used feature importance to select the most discriminative variables</p>
+      
+      <p><strong>Challenge:</strong> Imbalanced classes in purchase behavior<br>
+      <strong>Solution:</strong> Applied SMOTE oversampling for the prediction model</p>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="index.html#contact" class="btn">Discuss This Project</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Animate elements when scrolled into view
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.project-header, .gif-container, .project-meta, .project-content, .viz-item');
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
+    };
+
+    // Set initial state for animation
+    document.querySelectorAll('.project-header, .gif-container, .project-meta, .project-content, .viz-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease-out';
+    });
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+  </script>
+</body>
+</html>
